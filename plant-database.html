@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botanica Organica | Plant Database</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Global Styles (Consistent with Homepage) */
+        :root {
+            --ivory: #F5E6C5;
+            --organic: #3E422E;
+            --apricot: #d57535;
+            --natural: #9E866F;
+            --white: #ffffff;
+            --black: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+
+        body {
+            background-color: var(--ivory);
+            color: var(--organic);
+            line-height: 1.6;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--organic);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: var(--ivory);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .logo span {
+            color: var(--apricot);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--ivory);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--apricot);
+        }
+
+        /* Database Header */
+        .database-header {
+            text-align: center;
+            padding: 4rem 2rem 2rem;
+            background: linear-gradient(rgba(245, 230, 197, 0.9), rgba(245, 230, 197, 0.9)), 
+                        url('https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .database-header h1 {
+            font-size: 3rem;
+            color: var(--organic);
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1rem;
+        }
+
+        .database-header p {
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Search and Filters */
+        .search-filters {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--natural);
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--natural);
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+
+        .search-bar button {
+            padding: 0 1.5rem;
+            background-color: var(--apricot);
+            color: var(--organic);
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: var(--natural);
+        }
+
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--natural);
+            border-radius: 5px;
+            background-color: var(--ivory);
+        }
+
+        /* Plant Grid */
+        .plant-database {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .plant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .plant-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--natural);
+        }
+
+        .plant-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .plant-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid var(--apricot);
+        }
+
+        .plant-info {
+            padding: 1.5rem;
+        }
+
+        .plant-info h3 {
+            font-size: 1.5rem;
+            color: var(--organic);
+            margin-bottom: 0.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .plant-info .scientific-name {
+            font-style: italic;
+            color: var(--natural);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .plant-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .meta-item i {
+            color: var(--apricot);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--apricot);
+            color: var(--organic);
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background-color: var(--natural);
+            color: var(--ivory);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+
+        .pagination a {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--natural);
+            border-radius: 5px;
+            text-decoration: none;
+            color: var(--organic);
+            transition: all 0.3s;
+        }
+
+        .pagination a.active,
+        .pagination a:hover {
+            background-color: var(--apricot);
+            color: var(--white);
+            border-color: var(--apricot);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--organic);
+            color: var(--ivory);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--ivory);
+            text-decoration: none;
+        }
+
+        .social-icons {
+            margin-bottom: 1.5rem;
+        }
+
+        .social-icons a {
+            color: var(--ivory);
+            margin: 0 0.5rem;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--apricot);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .database-header h1 {
+                font-size: 2.2rem;
+            }
+            .filter-options {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Botanica<span>Organica</span></a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="plant-database.html" class="active">Plant Database</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Database Header -->
+    <section class="database-header">
+        <h1>Plant Database</h1>
+        <p>Explore our comprehensive collection of plant species, from common houseplants to rare botanical specimens. Search by name, family, or characteristics.</p>
+    </section>
+
+    <!-- Search and Filters -->
+    <section class="search-filters">
+        <div class="search-bar">
+            <input type="text" placeholder="Search for plants (e.g., 'rose', 'fern', 'tropical')">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+        <div class="filter-options">
+            <div class="filter-group">
+                <label for="plant-type">Plant Type</label>
+                <select id="plant-type">
+                    <option value="">All Types</option>
+                    <option value="flowering">Flowering Plants</option>
+                    <option value="fern">Ferns</option>
+                    <option value="succulent">Succulents</option>
+                    <option value="tree">Trees</option>
+                    <option value="shrub">Shrubs</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="light-requirement">Light Requirement</label>
+                <select id="light-requirement">
+                    <option value="">Any Light</option>
+                    <option value="full-sun">Full Sun</option>
+                    <option value="partial-shade">Partial Shade</option>
+                    <option value="full-shade">Full Shade</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="water-needs">Water Needs</label>
+                <select id="water-needs">
+                    <option value="">Any Water Needs</option>
+                    <option value="low">Low</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="difficulty">Care Difficulty</label>
+                <select id="difficulty">
+                    <option value="">Any Difficulty</option>
+                    <option value="easy">Easy</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="difficult">Difficult</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plant Grid -->
+    <section class="plant-database">
+        <div class="plant-grid">
+            <!-- Plant 1 -->
+            <div class="plant-card">
+                <img src="https://images.unsplash.com/photo-1598880940080-ff9a29891b85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1632&q=80" alt="Monstera Deliciosa">
+                <div class="plant-info">
+                    <h3>Monstera Deliciosa</h3>
+                    <span class="scientific-name">Monstera deliciosa</span>
+                    <div class="plant-meta">
+                        <span class="meta-item"><i class="fas fa-leaf"></i> Araceae</span>
+                        <span class="meta-item"><i class="fas fa-sun"></i> Partial Shade</span>
+                        <span class="meta-item"><i class="fas fa-tint"></i> Moderate</span>
+                    </div>
+                    <p>Popular tropical plant with distinctive split leaves. Thrives in humid environments with indirect light.</p>
+                    <a href="#" class="btn">View Details</a>
+                </div>
+            </div>
+
+            <!-- Plant 2 -->
+            <div class="plant-card">
+                <img src="https://images.unsplash.com/photo-1597848212624-a19eb35e2651?ixlib=rb-4.0.3&auto=format&fit=crop&w=1632&q=80" alt="Echeveria">
+                <div class="plant-info">
+                    <h3>Echeveria</h3>
+                    <span class="scientific-name">Echeveria elegans</span>
+                    <div class="plant-meta">
+                        <span class="meta-item"><i class="fas fa-leaf"></i> Crassulaceae</span>
+                        <span class="meta-item"><i class="fas fa-sun"></i> Full Sun</span>
+                        <span class="meta-item"><i class="fas fa-tint"></i> Low</span>
+                    </div>
+                    <p>Rosette-forming succulent with fleshy leaves. Drought-tolerant and perfect for sunny windowsills.</p>
+                    <a href="#" class="btn">View Details</a>
+                </div>
+            </div>
+
+            <!-- Plant 3 -->
+            <div class="plant-card">
+                <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1632&q=80" alt="Orchid">
+                <div class="plant-info">
+                    <h3>Moth Orchid</h3>
+                    <span class="scientific-name">Phalaenopsis spp.</span>
+                    <div class="plant-meta">
+                        <span class="meta-item"><i class="fas fa-leaf"></i> Orchidaceae</span>
+                        <span class="meta-item"><i class="fas fa-sun"></i> Indirect Light</span>
+                        <span class="meta-item"><i class="fas fa-tint"></i> Moderate</span>
+                    </div>
+                    <p>Epiphytic orchid with long-lasting flowers. Requires specific care but rewards with stunning blooms.</p>
+                    <a href="#" class="btn">View Details</a>
+                </div>
+            </div>
+
+            <!-- Plant 4 -->
+            <div class="plant-card">
+                <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1632&q=80" alt="Fiddle Leaf Fig">
+                <div class="plant-info">
+                    <h3>Fiddle Leaf Fig</h3>
+                    <span class="scientific-name">Ficus lyrata</span>
+                    <div class="plant-meta">
+                        <span class="meta-item"><i class="fas fa-leaf"></i> Moraceae</span>
+                        <span class="meta-item"><i class="fas fa-sun"></i> Bright Indirect</span>
+                        <span class="meta-item"><i class="fas fa-tint"></i> Moderate</span>
+                    </div>
+                    <p>Popular indoor tree with large, violin-shaped leaves. Sensitive to environmental changes.</p>
+                    <a href="#" class="btn">View Details</a>
+                </div>
+            </div>
+
+            <!-- Plant 5 -->
+            <div class="plant-card">
+                <img src="https://images.unsplash.com/photo-1525947088131-b701cd0f6dc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Snake Plant">
+                <div class="plant-info">
+                    <h3>Snake Plant</h3>
+                    <span class="scientific-name">Sansevieria trifasciata</span>
+                    <div class="plant-meta">
+                        <span class="meta-item"><i class="fas fa-leaf"></i> Asparagaceae</span>
+                        <span class="meta-item"><i class="fas fa-sun"></i> Low to Bright</span>
+                        <span class="meta-item"><i class="fas fa-tint"></i> Low</span>
+                    </div>
+                    <p>Extremely hardy plant with upright, sword-like leaves. Excellent air purifier.</p>
+                    <a href="#" class="btn">View Details</a>
+                </div>
+            </div>
+
+            <!-- Plant 6 -->
+            <div class="plant-card">
+                <img src="https://images.unsplash.com/photo-1591958915259-d2cf22b75118?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Peace Lily">
+                <div class="plant-info">
+                    <h3>Peace Lily</h3>
+                    <span class="scientific-name">Spathiphyllum wallisii</span>
+                    <div class="plant-meta">
+                        <span class="meta-item"><i class="fas fa-leaf"></i> Araceae</span>
+                        <span class="meta-item"><i class="fas fa-sun"></i> Low to Medium</span>
+                        <span class="meta-item"><i class="fas fa-tint"></i> High</span>
+                    </div>
+                    <p>Beautiful flowering plant that thrives in shade. Known for its air-purifying qualities.</p>
+                    <a href="#" class="btn">View Details</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#">&raquo;</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="plant-database.html">Plant Database</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-pinterest"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fas fa-envelope"></i></a>
+        </div>
+        <p class="copyright">&copy; 2024 Botanica Organica. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Simple search functionality (would connect to backend in real implementation)
+        document.querySelector('.search-bar button').addEventListener('click', function() {
+            const searchTerm = document.querySelector('.search-bar input').value.toLowerCase();
+            alert(`Searching for: ${searchTerm}\n\n(In a real implementation, this would filter the plant grid)`);
+        });
+
+        // Filter functionality
+        document.querySelectorAll('.filter-group select').forEach(select => {
+            select.addEventListener('change', function() {
+                alert(`Filter applied: ${this.id}\n\n(In a real implementation, this would update the plant grid)`);
+            });
+        });
+    </script>
+</body>
+</html>
